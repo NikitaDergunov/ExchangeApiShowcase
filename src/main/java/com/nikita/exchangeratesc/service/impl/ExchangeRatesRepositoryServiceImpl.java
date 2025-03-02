@@ -1,6 +1,5 @@
 package com.nikita.exchangeratesc.service.impl;
 
-import com.nikita.exchangeratesc.exceptions.InvalidCurrencyCodeException;
 import com.nikita.exchangeratesc.exceptions.ResourceNotFoundException;
 import com.nikita.exchangeratesc.service.ExchangeRatesRepositoryService;
 import org.springframework.stereotype.Service;

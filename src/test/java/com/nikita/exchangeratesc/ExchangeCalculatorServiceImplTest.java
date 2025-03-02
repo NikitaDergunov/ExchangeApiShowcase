@@ -36,7 +36,7 @@ class ExchangeCalculatorServiceImplTest {
     }
 
     @Test
-    void shouldCalculateExchangeRateWithoutAmount() {
+    void shouldCalculateExchangeRate_WithoutAmount() {
         // Given
         String fromCurrency = "USD";
         String toCurrency = "GBP";
@@ -63,7 +63,7 @@ class ExchangeCalculatorServiceImplTest {
     }
 
     @Test
-    void shouldCalculateExchangeRateWithAmount() {
+    void shouldCalculateExchangeRate_WithAmount() {
         // Given
         String fromCurrency = "USD";
         String toCurrency = "GBP";
@@ -93,7 +93,7 @@ class ExchangeCalculatorServiceImplTest {
     @ParameterizedTest
     @ValueSource(strings = {"usd", "US$", "12A", "AB", "USDT", ""})
     @NullAndEmptySource
-    void shouldThrowInvalidCurrencyCodeExceptionWhenFromCurrencyFormatIsInvalid(String invalidCurrency) {
+    void shouldThrowInvalidCurrencyCodeException_WhenFromCurrencyFormatIsInvalid(String invalidCurrency) {
         // Given
         String toCurrency = "EUR";
         Optional<BigDecimal> amount = Optional.empty();
@@ -110,7 +110,7 @@ class ExchangeCalculatorServiceImplTest {
     @ParameterizedTest
     @ValueSource(strings = {"eur", "EU$", "12A", "AB", "USDT", ""})
     @NullAndEmptySource
-    void shouldThrowInvalidCurrencyCodeExceptionWhenToCurrencyFormatIsInvalid(String invalidCurrency) {
+    void shouldThrowInvalidCurrencyCodeException_WhenToCurrencyFormatIsInvalid(String invalidCurrency) {
         // Given
         String fromCurrency = "USD";
         Optional<BigDecimal> amount = Optional.empty();
@@ -127,7 +127,7 @@ class ExchangeCalculatorServiceImplTest {
     }
 
     @Test
-    void shouldThrowResourceNotFoundExceptionWhenFromCurrencyDoesNotExist() {
+    void shouldThrowResourceNotFoundException_WhenFromCurrencyDoesNotExist() {
         // Given
         String fromCurrency = "XYZ"; // Valid format but doesn't exist
         String toCurrency = "EUR";
@@ -146,7 +146,7 @@ class ExchangeCalculatorServiceImplTest {
     }
 
     @Test
-    void shouldThrowResourceNotFoundExceptionWhenToCurrencyDoesNotExist() {
+    void shouldThrowResourceNotFoundException_WhenToCurrencyDoesNotExist() {
         // Given
         String fromCurrency = "USD";
         String toCurrency = "XYZ"; // Valid format but doesn't exist
@@ -166,7 +166,7 @@ class ExchangeCalculatorServiceImplTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenAmountIsNegative() {
+    void shouldThrowException_WhenAmountIsNegative() {
         // Given
         String fromCurrency = "USD";
         String toCurrency = "EUR";
@@ -187,7 +187,7 @@ class ExchangeCalculatorServiceImplTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenAmountIsZero() {
+    void shouldThrowException_WhenAmountIsZero() {
         // Given
         String fromCurrency = "USD";
         String toCurrency = "EUR";
