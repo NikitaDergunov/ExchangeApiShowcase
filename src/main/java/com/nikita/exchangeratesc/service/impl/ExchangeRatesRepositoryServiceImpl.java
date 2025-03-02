@@ -1,6 +1,7 @@
 package com.nikita.exchangeratesc.service.impl;
 
 import com.nikita.exchangeratesc.exceptions.InvalidCurrencyCodeException;
+import com.nikita.exchangeratesc.exceptions.ResourceNotFoundException;
 import com.nikita.exchangeratesc.service.ExchangeRatesRepositoryService;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,8 @@ public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesReposito
 
     @Override
     public BigDecimal getExchangeRate(String currencyCode) {
-        return Optional.ofNullable(database.get(currencyCode)).orElseThrow(()->new InvalidCurrencyCodeException(currencyCode));
+        return Optional.ofNullable(database.get(currencyCode))
+                .orElseThrow(()->new ResourceNotFoundException("Currency with code: " + currencyCode + " not found"));
     }
 
     @Override
@@ -42,7 +44,7 @@ public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesReposito
     @Override
     public void updateUsage(String currencyCode) {
         if(!usage.containsKey(currencyCode)) {
-            throw new InvalidCurrencyCodeException(currencyCode);
+            throw new ResourceNotFoundException("Currency with code: " + currencyCode + " not found");
         }
         usage.put(currencyCode, usage.get(currencyCode).add(BigInteger.ONE));
     }
@@ -55,7 +57,7 @@ public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesReposito
     @Override
     public BigInteger getUsage(String currencyCode) {
         return Optional.ofNullable(usage.get(currencyCode))
-                .orElseThrow(()->new InvalidCurrencyCodeException(currencyCode));
+                .orElseThrow(()->new ResourceNotFoundException("Currency with code: " + currencyCode + " not found"));
     }
 
 

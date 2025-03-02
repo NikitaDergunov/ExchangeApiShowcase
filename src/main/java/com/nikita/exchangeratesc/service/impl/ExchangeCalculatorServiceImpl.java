@@ -3,6 +3,7 @@ package com.nikita.exchangeratesc.service.impl;
 import com.nikita.exchangeratesc.dto.ExchangeRateResponse;
 import com.nikita.exchangeratesc.exceptions.InvalidAmountException;
 import com.nikita.exchangeratesc.exceptions.InvalidCurrencyCodeException;
+import com.nikita.exchangeratesc.exceptions.ResourceNotFoundException;
 import com.nikita.exchangeratesc.service.ExchangeCalculatorService;
 import com.nikita.exchangeratesc.service.ExchangeRatesRepositoryService;
 import org.springframework.stereotype.Service;
@@ -46,16 +47,28 @@ public class ExchangeCalculatorServiceImpl implements ExchangeCalculatorService 
     }
 
     private void throwIfInvalid(String fromCurrency, String toCurrency, Optional<BigDecimal> amount) {
-        boolean fromExists = exchangeRatesRepositoryService.hasCurrency(fromCurrency);
-        boolean toExists = exchangeRatesRepositoryService.hasCurrency(toCurrency);
-        if(!fromExists){
-            throw new InvalidCurrencyCodeException(fromCurrency);
+        validateCurrency(fromCurrency);
+        validateCurrency(toCurrency);
+        validateAmount(amount);
+    }
+    private void validateCurrency(String currency) {
+        if(!isValidCurrencyCodeRegex(currency)) {
+            throw new InvalidCurrencyCodeException("Currency code doesn't pass validation : " + currency);
         }
-        if(!toExists){
-            throw new InvalidCurrencyCodeException(toCurrency);
+        if (!exists(currency)) {
+            throw new ResourceNotFoundException("Currency with code: " + currency + " not found");
         }
+    }
+    private boolean exists(String currency) {
+        return exchangeRatesRepositoryService.hasCurrency(currency);
+    }
+    private static boolean isValidCurrencyCodeRegex(String code) {
+        return code != null && code.matches("^[A-Z]{3}$");
+    }
+
+    private static void validateAmount(Optional<BigDecimal> amount) {
         if(amount.isPresent() && amount.get().compareTo(BigDecimal.ZERO) <= 0){
-            throw new InvalidAmountException(amount.get().toPlainString());
+            throw new InvalidAmountException("Amount should be greater than zero");
         }
     }
 }
