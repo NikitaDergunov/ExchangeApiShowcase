@@ -46,11 +46,16 @@ public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesReposito
         }
         usage.put(currencyCode, usage.get(currencyCode).add(BigInteger.ONE));
     }
+
     @Override
     public Map<String, BigInteger> getUsage() {
         return Collections.unmodifiableMap(usage);
     }
-
+    @Override
+    public void updateUsageForPair(String currency1, String currency2){
+        updateUsage(currency1);
+        updateUsage(currency2);
+    }
     private void populateUsages(Set<String> keys) {
         for (String key : keys) {
             usage.computeIfAbsent(key, k -> new BigInteger("0"));

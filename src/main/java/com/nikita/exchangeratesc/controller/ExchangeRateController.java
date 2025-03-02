@@ -18,12 +18,12 @@ public class ExchangeRateController {
 
     private final ExchangeCalculatorService exchangeCalculatorService;
 
-    @GetMapping("/{currency1}/{currency2}")
-    public ExchangeRateResponse getExchangeRate(@PathVariable String currency1,
-                                                @PathVariable String currency2,
+    @GetMapping("/{fromCurrency}/{toCurrency}")
+    public ExchangeRateResponse getExchangeRate(@PathVariable String fromCurrency,
+                                                @PathVariable String toCurrency,
                                                 @RequestParam(required = false) Optional<BigDecimal> amount) {
 
-        return exchangeCalculatorService.calcualteExchangeRate(currency1, currency2, amount);
+        return exchangeCalculatorService.calcualteExchangeRate(fromCurrency, toCurrency, amount);
     }
 
 

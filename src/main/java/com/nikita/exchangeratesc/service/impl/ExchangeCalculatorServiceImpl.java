@@ -20,19 +20,29 @@ public class ExchangeCalculatorServiceImpl implements ExchangeCalculatorService 
     }
 
     @Override
-    public ExchangeRateResponse calcualteExchangeRate(String fromCurrency, String toCurrency, Optional<BigDecimal> amount) {
-        throwIfInvalid(fromCurrency,toCurrency,amount);
+    public ExchangeRateResponse calcualteExchangeRate(String fromCurrency,String toCurrency, Optional<BigDecimal> amount) {
+        throwIfInvalid(toCurrency,fromCurrency,amount);
+        updateUsages(fromCurrency,toCurrency);
+        BigDecimal rate = calculateExchangeRate(toCurrency,fromCurrency);
+        return buildResponse(fromCurrency, toCurrency, amount, rate);
+    }
+
+    private static ExchangeRateResponse buildResponse(String fromCurrency, String toCurrency, Optional<BigDecimal> amount, BigDecimal rate) {
         var response = new ExchangeRateResponse();
-        ExchangeRateResponse.CurrencyPair pair = new ExchangeRateResponse.CurrencyPair(fromCurrency,toCurrency);
+        ExchangeRateResponse.CurrencyPair pair = new ExchangeRateResponse.CurrencyPair(fromCurrency, toCurrency);
         response.setPair(pair);
-        BigDecimal rate = calculateExchangeRate(fromCurrency,toCurrency);
-        response.setRate(amount.isEmpty() ? rate : rate.multiply(amount.get()));
+        response.setRate(amount.map(rate::multiply).orElse(rate));
         return response;
     }
+
+    private void updateUsages(String fromCurrency, String toCurrency) {
+        exchangeRatesRepositoryService.updateUsageForPair(fromCurrency,toCurrency);
+    }
+
     private BigDecimal calculateExchangeRate(String fromCurrency, String toCurrency) {
         BigDecimal fromRateEuro = exchangeRatesRepositoryService.getExchangeRate(fromCurrency);
         BigDecimal toRateEuro = exchangeRatesRepositoryService.getExchangeRate(toCurrency);
-        return fromRateEuro.divide(toRateEuro,4, RoundingMode.HALF_UP);
+        return fromRateEuro.divide(toRateEuro,8, RoundingMode.HALF_UP);
     }
 
     private void throwIfInvalid(String fromCurrency, String toCurrency, Optional<BigDecimal> amount) {

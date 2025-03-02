@@ -8,9 +8,13 @@ public interface ExchangeRatesRepositoryService {
     void saveExchangeRates(Map<String, BigDecimal> newRates);
     Map<String, BigDecimal> getAllExchangeRates();
     BigDecimal getExchangeRate(String currencyCode);
-    public boolean hasCurrency(String currencyCode);
+     boolean hasCurrency(String currencyCode);
 
     void updateUsage(String currencyCode);
 
+
+
+
     Map<String, BigInteger> getUsage();
+    void updateUsageForPair(String currency1, String currency2);
 }
