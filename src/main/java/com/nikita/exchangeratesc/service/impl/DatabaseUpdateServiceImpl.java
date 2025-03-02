@@ -20,7 +20,7 @@ public class DatabaseUpdateServiceImpl implements DatabaseUpdateService {
     private final ExchangeRatesRepositoryService exchangeRatesRepositoryService;
 
     @EventListener(ApplicationReadyEvent.class)
-    @Scheduled(cron = "${foo.update}",zone = "CET")
+    @Scheduled(cron = "${rates.ecb-cron}", zone = "CET")
     @Override
     public void runImport(){
         var ratesFromECB = ecbRatesService.getRatesFromECB();
