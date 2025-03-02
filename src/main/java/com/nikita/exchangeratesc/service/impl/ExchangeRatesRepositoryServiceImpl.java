@@ -48,9 +48,17 @@ public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesReposito
     }
 
     @Override
-    public Map<String, BigInteger> getUsage() {
-        return Collections.unmodifiableMap(usage);
+    public Set<String> getAllCurrencyCodes() {
+        return database.keySet();
     }
+
+    @Override
+    public BigInteger getUsage(String currencyCode) {
+        return Optional.ofNullable(usage.get(currencyCode))
+                .orElseThrow(()->new InvalidCurrencyCodeException(currencyCode));
+    }
+
+
     @Override
     public void updateUsageForPair(String currency1, String currency2){
         updateUsage(currency1);

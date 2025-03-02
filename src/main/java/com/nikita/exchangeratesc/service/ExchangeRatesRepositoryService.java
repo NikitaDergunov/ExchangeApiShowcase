@@ -3,6 +3,7 @@ package com.nikita.exchangeratesc.service;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Map;
+import java.util.Set;
 
 public interface ExchangeRatesRepositoryService {
     void saveExchangeRates(Map<String, BigDecimal> newRates);
@@ -13,8 +14,8 @@ public interface ExchangeRatesRepositoryService {
     void updateUsage(String currencyCode);
 
 
+    Set<String> getAllCurrencyCodes();
 
-
-    Map<String, BigInteger> getUsage();
+    BigInteger getUsage(String currencyCode);
     void updateUsageForPair(String currency1, String currency2);
 }
