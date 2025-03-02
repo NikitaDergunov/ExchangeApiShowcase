@@ -55,7 +55,7 @@ public class ExchangeCalculatorServiceImpl implements ExchangeCalculatorService 
         if(!isValidCurrencyCodeRegex(currency)) {
             throw new InvalidCurrencyCodeException("Currency code doesn't pass validation : " + currency);
         }
-        if (!exists(currency)) {
+        else if (!exists(currency)) {
             throw new ResourceNotFoundException("Currency with code: " + currency + " not found");
         }
     }
