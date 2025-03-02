@@ -3,7 +3,6 @@ package com.nikita.exchangeratesc.service.impl;
 import com.nikita.exchangeratesc.service.DatabaseUpdateService;
 import com.nikita.exchangeratesc.service.ECBRatesService;
 import com.nikita.exchangeratesc.service.ExchangeRatesRepositoryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,8 +12,12 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class DatabaseUpdateServiceImpl implements DatabaseUpdateService {
+    public DatabaseUpdateServiceImpl(ECBRatesService ecbRatesService, ExchangeRatesRepositoryService exchangeRatesRepositoryService) {
+        this.ecbRatesService = ecbRatesService;
+        this.exchangeRatesRepositoryService = exchangeRatesRepositoryService;
+    }
+
     private final ECBRatesService ecbRatesService;
     private final ExchangeRatesRepositoryService exchangeRatesRepositoryService;
 

@@ -5,7 +5,6 @@ import com.nikita.exchangeratesc.exceptions.InvalidAmountException;
 import com.nikita.exchangeratesc.exceptions.InvalidCurrencyCodeException;
 import com.nikita.exchangeratesc.service.ExchangeCalculatorService;
 import com.nikita.exchangeratesc.service.ExchangeRatesRepositoryService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,9 +12,13 @@ import java.math.RoundingMode;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ExchangeCalculatorServiceImpl implements ExchangeCalculatorService {
     private final ExchangeRatesRepositoryService exchangeRatesRepositoryService;
+
+    public ExchangeCalculatorServiceImpl(ExchangeRatesRepositoryService exchangeRatesRepositoryService) {
+        this.exchangeRatesRepositoryService = exchangeRatesRepositoryService;
+    }
+
     @Override
     public ExchangeRateResponse calcualteExchangeRate(String fromCurrency, String toCurrency, Optional<BigDecimal> amount) {
         throwIfInvalid(fromCurrency,toCurrency,amount);

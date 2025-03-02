@@ -1,11 +1,26 @@
 package com.nikita.exchangeratesc.dto;
 
-import lombok.Data;
 
 import java.math.BigDecimal;
-@Data
+
 public class ExchangeRateResponse {
-    CurrencyPair pair;
-    BigDecimal rate;
+    private CurrencyPair pair;
+    private BigDecimal rate;
     public record CurrencyPair(String fromCurrency, String toCurrency){};
+
+    public CurrencyPair getPair() {
+        return pair;
+    }
+
+    public void setPair(CurrencyPair pair) {
+        this.pair = pair;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
+    }
 }

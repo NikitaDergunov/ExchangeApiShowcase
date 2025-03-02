@@ -3,7 +3,6 @@ package com.nikita.exchangeratesc.service.impl;
 import com.nikita.exchangeratesc.dto.ecb.ECBCurrencyCubeDto;
 import com.nikita.exchangeratesc.dto.ecb.ECBEnvelopeDto;
 import com.nikita.exchangeratesc.service.ECBRatesService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,12 +13,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ECBRatesServiceImpl implements ECBRatesService {
     @Value("${rates.ecb-url}")
-    private static String ECB_RATES_URL;
+    private String ECB_RATES_URL;
 
     private final RestTemplate restTemplate;
+
+    public ECBRatesServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public Map<String, BigDecimal> getRatesFromECB() {
