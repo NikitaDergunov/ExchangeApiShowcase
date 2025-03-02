@@ -19,7 +19,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,7 +38,7 @@ class ExchangeCalculatorServiceImplTest {
 
     @Test
     void shouldCalculateExchangeRate_WithoutAmount() {
-        // Given
+        //Given
         String fromCurrency = "USD";
         String toCurrency = "GBP";
 
@@ -52,10 +53,10 @@ class ExchangeCalculatorServiceImplTest {
         when(exchangeRatesRepositoryService.getExchangeRate(fromCurrency)).thenReturn(usdToEuroRate);
         when(exchangeRatesRepositoryService.getExchangeRate(toCurrency)).thenReturn(gbpToEuroRate);
 
-        // When
+        //When
         ExchangeRateResponse response = exchangeCalculatorService.calcualteExchangeRate(fromCurrency, toCurrency, amount);
 
-        // Then
+        //Then
         assertEquals(fromCurrency, response.getPair().fromCurrency());
         assertEquals(toCurrency, response.getPair().toCurrency());
         assertEquals(expectedRate, response.getRate());
@@ -64,7 +65,7 @@ class ExchangeCalculatorServiceImplTest {
 
     @Test
     void shouldCalculateExchangeRate_WithAmount() {
-        // Given
+        //Given
         String fromCurrency = "USD";
         String toCurrency = "GBP";
         BigDecimal inputAmount = new BigDecimal("100");
@@ -79,10 +80,10 @@ class ExchangeCalculatorServiceImplTest {
         when(exchangeRatesRepositoryService.getExchangeRate(fromCurrency)).thenReturn(usdToEuroRate);
         when(exchangeRatesRepositoryService.getExchangeRate(toCurrency)).thenReturn(gbpToEuroRate);
 
-        // When
+        //When
         ExchangeRateResponse response = exchangeCalculatorService.calcualteExchangeRate(fromCurrency, toCurrency, amount);
 
-        // Then
+        //Then
         assertEquals(fromCurrency, response.getPair().fromCurrency());
         assertEquals(toCurrency, response.getPair().toCurrency());
         assertEquals(expectedRate.multiply(inputAmount), response.getRate());
@@ -94,10 +95,10 @@ class ExchangeCalculatorServiceImplTest {
     @ValueSource(strings = {"usd", "US$", "12A", "AB", "USDT", ""})
     @NullAndEmptySource
     void shouldThrowInvalidCurrencyCodeException_WhenFromCurrencyFormatIsInvalid(String invalidCurrency) {
-        // Given
+        //Given
         String toCurrency = "EUR";
         Optional<BigDecimal> amount = Optional.empty();
-        // When & Then
+        //When\Then
         InvalidCurrencyCodeException exception = assertThrows(
                 InvalidCurrencyCodeException.class,
                 () -> exchangeCalculatorService.calcualteExchangeRate(toCurrency, invalidCurrency, amount)
@@ -111,12 +112,12 @@ class ExchangeCalculatorServiceImplTest {
     @ValueSource(strings = {"eur", "EU$", "12A", "AB", "USDT", ""})
     @NullAndEmptySource
     void shouldThrowInvalidCurrencyCodeException_WhenToCurrencyFormatIsInvalid(String invalidCurrency) {
-        // Given
+        //Given
         String fromCurrency = "USD";
         Optional<BigDecimal> amount = Optional.empty();
         when(exchangeRatesRepositoryService.hasCurrency(fromCurrency)).thenReturn(true);
 
-        // When & Then
+        //When\Then
         InvalidCurrencyCodeException exception = assertThrows(
                 InvalidCurrencyCodeException.class,
                 () -> exchangeCalculatorService.calcualteExchangeRate(invalidCurrency, fromCurrency, amount)
@@ -128,14 +129,14 @@ class ExchangeCalculatorServiceImplTest {
 
     @Test
     void shouldThrowResourceNotFoundException_WhenFromCurrencyDoesNotExist() {
-        // Given
+        //Given
         String fromCurrency = "XYZ"; // Valid format but doesn't exist
         String toCurrency = "EUR";
         Optional<BigDecimal> amount = Optional.empty();
 
         when(exchangeRatesRepositoryService.hasCurrency(fromCurrency)).thenReturn(false);
 
-        // When & Then
+        //When\Then
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> exchangeCalculatorService.calcualteExchangeRate(toCurrency, fromCurrency, amount)
@@ -147,7 +148,7 @@ class ExchangeCalculatorServiceImplTest {
 
     @Test
     void shouldThrowResourceNotFoundException_WhenToCurrencyDoesNotExist() {
-        // Given
+        //Given
         String fromCurrency = "USD";
         String toCurrency = "XYZ"; // Valid format but doesn't exist
         Optional<BigDecimal> amount = Optional.empty();
@@ -155,7 +156,7 @@ class ExchangeCalculatorServiceImplTest {
         when(exchangeRatesRepositoryService.hasCurrency(fromCurrency)).thenReturn(true);
         when(exchangeRatesRepositoryService.hasCurrency(toCurrency)).thenReturn(false);
 
-        // When & Then
+        //When\Then
         ResourceNotFoundException exception = assertThrows(
                 ResourceNotFoundException.class,
                 () -> exchangeCalculatorService.calcualteExchangeRate(toCurrency, fromCurrency, amount)
@@ -167,7 +168,7 @@ class ExchangeCalculatorServiceImplTest {
 
     @Test
     void shouldThrowException_WhenAmountIsNegative() {
-        // Given
+        //Given
         String fromCurrency = "USD";
         String toCurrency = "EUR";
         BigDecimal negativeAmount = new BigDecimal("-10");
@@ -176,7 +177,7 @@ class ExchangeCalculatorServiceImplTest {
         when(exchangeRatesRepositoryService.hasCurrency(fromCurrency)).thenReturn(true);
         when(exchangeRatesRepositoryService.hasCurrency(toCurrency)).thenReturn(true);
 
-        // When & Then
+        //When\Then
         InvalidAmountException exception = assertThrows(
                 InvalidAmountException.class,
                 () -> exchangeCalculatorService.calcualteExchangeRate(toCurrency, fromCurrency, amount)
@@ -188,7 +189,7 @@ class ExchangeCalculatorServiceImplTest {
 
     @Test
     void shouldThrowException_WhenAmountIsZero() {
-        // Given
+        //Given
         String fromCurrency = "USD";
         String toCurrency = "EUR";
         BigDecimal zeroAmount = BigDecimal.ZERO;
@@ -197,7 +198,7 @@ class ExchangeCalculatorServiceImplTest {
         when(exchangeRatesRepositoryService.hasCurrency(fromCurrency)).thenReturn(true);
         when(exchangeRatesRepositoryService.hasCurrency(toCurrency)).thenReturn(true);
 
-        // When & Then
+        //When & Then
         InvalidAmountException exception = assertThrows(
                 InvalidAmountException.class,
                 () -> exchangeCalculatorService.calcualteExchangeRate(toCurrency, fromCurrency, amount)
@@ -209,7 +210,7 @@ class ExchangeCalculatorServiceImplTest {
 
     @Test
     void shouldHandleComplexExchangeRateCalculation() {
-        // Given
+        //Given
         String fromCurrency = "JPY";
         String toCurrency = "CAD";
         BigDecimal inputAmount = new BigDecimal("10000");
@@ -224,10 +225,10 @@ class ExchangeCalculatorServiceImplTest {
         when(exchangeRatesRepositoryService.getExchangeRate(fromCurrency)).thenReturn(jpyToEuroRate);
         when(exchangeRatesRepositoryService.getExchangeRate(toCurrency)).thenReturn(cadToEuroRate);
 
-        // When
+        //When
         ExchangeRateResponse response = exchangeCalculatorService.calcualteExchangeRate(fromCurrency,toCurrency, amount);
 
-        // Then
+        //Then
         assertEquals(fromCurrency, response.getPair().fromCurrency());
         assertEquals(toCurrency, response.getPair().toCurrency());
         assertEquals(expectedRate.multiply(inputAmount), response.getRate());

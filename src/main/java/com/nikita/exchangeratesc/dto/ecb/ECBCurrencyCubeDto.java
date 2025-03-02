@@ -4,10 +4,9 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 
-
 import java.math.BigDecimal;
 
-// Represents the innermost Cube elements with currency and rate
+//Represents the innermost Cube elements with currency and rate
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ECBCurrencyCubeDto {
     @XmlAttribute(name = "currency")

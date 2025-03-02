@@ -37,23 +37,23 @@ public class ECBRatesServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Set the private static field value using ReflectionTestUtils
+        //Set the private static field value
         ReflectionTestUtils.setField(ECBRatesServiceImpl.class, "ECB_RATES_URL", TEST_ECB_URL);
     }
 
     @Test
-    void getRatesFromECB_Success() {
-        // Prepare test data
+    void testGetRatesFromECB_Success() {
+        //Given
         ECBEnvelopeDto mockEnvelope = createMockEnvelope();
 
-        // Configure mock
+
         when(restTemplate.getForObject(eq(TEST_ECB_URL), eq(ECBEnvelopeDto.class)))
                 .thenReturn(mockEnvelope);
 
-        // Execute method
+        //When
         Map<String, BigDecimal> result = ecbRatesService.getRatesFromECB();
 
-        // Verify results
+        //Then
         assertEquals(4, result.size()); // EUR + 3 test currencies
         assertEquals(BigDecimal.ONE, result.get("EUR"));
         assertEquals(new BigDecimal("1.1234"), result.get("USD"));
@@ -62,12 +62,12 @@ public class ECBRatesServiceImplTest {
     }
 
     @Test
-    void getRatesFromECB_ThrowsException_WhenRestTemplateFailsWithException() {
-        // Configure mock to throw exception
+    void testGetRatesFromECB_ThrowsException_WhenRestTemplateFailsWithException() {
+
         when(restTemplate.getForObject(anyString(), eq(ECBEnvelopeDto.class)))
                 .thenThrow(new RuntimeException("Network error"));
 
-        // Verify the method properly wraps and throws the exception
+        //When
         Exception exception = assertThrows(RuntimeException.class, () -> {
             ecbRatesService.getRatesFromECB();
         });
@@ -76,7 +76,7 @@ public class ECBRatesServiceImplTest {
     }
 
     private ECBEnvelopeDto createMockEnvelope() {
-        // Create test currency cubes
+        //Create test currency cubes
         ECBCurrencyCubeDto usdCube = new ECBCurrencyCubeDto();
         usdCube.setCurrency("USD");
         usdCube.setRate(new BigDecimal("1.1234"));
@@ -91,16 +91,16 @@ public class ECBRatesServiceImplTest {
 
         List<ECBCurrencyCubeDto> currencyCubes = Arrays.asList(usdCube, gbpCube, jpyCube);
 
-        // Create TimeCube
+        //Create TimeCube
         ECBTimeCubeDto timeCube = new ECBTimeCubeDto();
         timeCube.setTime("2025-03-02");
         timeCube.setECBCurrencyCubeDtos(currencyCubes);
 
-        // Create Cube
+        //Create Cube
         ECBCubeDto cube = new ECBCubeDto();
         cube.setTimeCube(timeCube);
 
-        // Create envelope
+        //create envelope
         ECBEnvelopeDto envelope = new ECBEnvelopeDto();
         envelope.setCube(cube);
 

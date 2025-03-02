@@ -5,10 +5,9 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 
-
 import java.util.List;
 
-// Represents the Cube element with time attribute
+//Represents the Cube element with time attribute
 @XmlAccessorType(XmlAccessType.FIELD)
 
 public class ECBTimeCubeDto {

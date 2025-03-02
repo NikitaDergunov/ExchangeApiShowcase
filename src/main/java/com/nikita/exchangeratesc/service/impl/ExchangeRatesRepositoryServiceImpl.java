@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
 @Service
 public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesRepositoryService {
     private final Map<String, BigDecimal> database = new ConcurrentHashMap<>();
@@ -18,7 +19,6 @@ public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesReposito
 
     @Override
     public void saveExchangeRates(Map<String, BigDecimal> newRates) {
-        // Clear existing rates and add new ones
         database.clear();
         database.putAll(newRates);
         populateUsages(newRates.keySet());
@@ -26,7 +26,7 @@ public class ExchangeRatesRepositoryServiceImpl implements ExchangeRatesReposito
 
     @Override
     public Map<String, BigDecimal> getAllExchangeRates() {
-        // Return an unmodifiable view to prevent external modification
+        //Return an unmodifiable view to prevent external modification
         return Collections.unmodifiableMap(database);
     }
 

@@ -1,11 +1,11 @@
 package com.nikita.exchangeratesc.dto;
 
+//Represents an error on the api
 public class ErrorResponse {
     private String message;
     private int status;
 
 
-    // Constructor, getters, and setters
     public ErrorResponse(String message, int status) {
         this.message = message;
         this.status = status;

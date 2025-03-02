@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.List;
 
 @Service
 public class ECBRatesServiceImpl implements ECBRatesService {
@@ -28,16 +28,13 @@ public class ECBRatesServiceImpl implements ECBRatesService {
         Map<String, BigDecimal> response = new ConcurrentHashMap<>();
 
         try {
-            // Get XML from ECB
+            //Get XML from ECB
             ECBEnvelopeDto envelope = restTemplate.getForObject(ECB_RATES_URL, ECBEnvelopeDto.class);
-
-            // Add EUR/EUR rate (1.0) as base currency
+            //Add EUR/EUR rate (1.0) as base currency
             response.put("EUR", BigDecimal.ONE);
 
-            // Extract rates from XML structure
             List<ECBCurrencyCubeDto> currencyCubes = envelope.getCube().getTimeCube().getECBCurrencyCubeDtos();
 
-            // Populate map with currency codes and rates
             for (ECBCurrencyCubeDto cube : currencyCubes) {
                 response.put(cube.getCurrency(), cube.getRate());
             }

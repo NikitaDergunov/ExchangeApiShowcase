@@ -8,11 +8,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Map;
-
 @Service
 public class DatabaseUpdateServiceImpl implements DatabaseUpdateService {
+
     public DatabaseUpdateServiceImpl(ECBRatesService ecbRatesService, ExchangeRatesRepositoryService exchangeRatesRepositoryService) {
         this.ecbRatesService = ecbRatesService;
         this.exchangeRatesRepositoryService = exchangeRatesRepositoryService;

@@ -1,10 +1,8 @@
 package com.nikita.exchangeratesc.dto;
 
-
-import java.math.BigInteger;
-import java.util.Map;
 import java.util.Set;
 
+//Represents an api response containing all currencies
 public class BulkCurrencyResponseDto {
     private Set<String> currencies;
 
