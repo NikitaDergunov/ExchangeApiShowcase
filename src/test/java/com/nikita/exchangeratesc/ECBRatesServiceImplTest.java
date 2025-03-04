@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ECBRatesServiceImplTest {
-    private static final String TEST_ECB_URL = "test_url";
+    private static final String TEST_ECB_URL = "http://test_url.com";
 
     @Mock
     private RestTemplate restTemplate;
@@ -38,7 +38,7 @@ public class ECBRatesServiceImplTest {
     @BeforeEach
     void setUp() {
         //Set the private static field value
-        ReflectionTestUtils.setField(ECBRatesServiceImpl.class, "ECB_RATES_URL", TEST_ECB_URL);
+        ReflectionTestUtils.setField(ecbRatesService, "ECB_RATES_URL", TEST_ECB_URL);
     }
 
     @Test
