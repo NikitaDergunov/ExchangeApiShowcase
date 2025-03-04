@@ -29,7 +29,7 @@ and integration with external financial data sources.
 
 ## API Endpoints
 
-- `/api/{baseCurrency}/{targetCurrency}`: Get exchange rate for a specific currency pair with an optional amount
+- `/{baseCurrency}/{targetCurrency}`: Get exchange rate for a specific currency pair with an optional amount
   parameter
 - `/currencies`: List supported currencies with request statistics
 - `/currencies/currency`: Get currency usage statistics
