@@ -17,7 +17,6 @@ and integration with external financial data sources.
 - Java
 - Spring Boot
 - Spring Web
-- Lombok
 - JUnit
 - Mockito
 
